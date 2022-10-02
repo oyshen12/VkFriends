@@ -1,18 +1,25 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="d-flex py-8">
+    <v-col cols="6">
+      <serach-users></serach-users>
+      <user-list></user-list>
+    </v-col>
+    <v-col cols="6">
+      <user-list></user-list>
+    </v-col>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import SerachUsers from "@/components/SerachUsers.vue";
+import UserList from "@/components/UserList.vue";
 
 export default {
-  name: 'HomeView',
+  name: "Home",
+
   components: {
-    HelloWorld
-  }
-}
+    SerachUsers,
+    UserList,
+  },
+};
 </script>

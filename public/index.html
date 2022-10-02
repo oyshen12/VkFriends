@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
+    />
+    <script
+      src="https://vk.com/js/api/openapi.js?169"
+      type="text/javascript"
+    ></script>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
     </noscript>
+    <!-- <script type="text/javascript">
+      var script = document.createElement("SCRIPT");
+      script.src =
+        "https://api.vk.com/method/users.get?user_ids=440277727&fields=bdate&access_token=vk1.a.BFp0Kgub3PaB3LmZoC6IYNeYQkUO_TXEL2tEPOAtML1Qa2GslsgdDN89NWdSqG0VkpuhNQV4s3kXbu6ujS84SUorCSGy27P_PL7NGTMGcaey0vyegIXd6qIknFIw6oFDcNVjaSV2ZqKcmP5JHJmdpASbT83r5Ub675vKBtgX1qaeiPME_C6ITfQh-JvQMD9R&v=5.194&callback=callbackFunc";
+      document.getElementsByTagName("head")[0].appendChild(script);
+      function callbackFunc(result) {
+        console.log("result ", result);
+        alert(result.response[0].first_name);
+      }
+    </script> -->
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script type="text/javascript">
+      VK.init({
+        apiId: 51438811,
+      });
+    </script>
   </body>
 </html>
