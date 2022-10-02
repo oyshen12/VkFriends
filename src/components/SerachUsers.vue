@@ -8,45 +8,41 @@
         solo
         class="mr-4"
       ></v-text-field>
-      <v-btn @click="searchUsers(userOutput)" class="mt-3"
+      <v-btn @click="searchUsers(userOutput)" color="primary" class="mt-3"
         >Поиск<v-icon right> mdi-magnify </v-icon></v-btn
       >
     </div>
 
     <v-list>
-      <v-list-item-group
-        v-model="selected"
-        active-class="primary--text"
-        multiple
+      <v-list-item
+        v-for="(user, index) in searchedUsers"
+        :key="user.id"
+        @click="toggleUser(user, index)"
       >
-        <template v-for="(user, index) in searchedUsers">
-          <v-list-item :key="user.id" @click="toggleUser(user, index)">
-            <template v-slot:default="{ active }">
-              <v-list-item-avatar>
-                <v-img
-                  :alt="`${user.first_name} avatar`"
-                  :src="user.photo_max"
-                ></v-img>
-              </v-list-item-avatar>
+        <template>
+          <v-list-item-avatar>
+            <v-img
+              :alt="`${user.first_name} avatar`"
+              :src="user.photo_max"
+            ></v-img>
+          </v-list-item-avatar>
 
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="user.first_name + ' ' + user.last_name"
-                ></v-list-item-title>
-              </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title
+              v-text="`${user.first_name} ${user.last_name}`"
+            ></v-list-item-title>
+          </v-list-item-content>
 
-              <v-list-item-action>
-                <v-btn icon>
-                  <v-icon v-if="selected.includes(index)" color="primary"
-                    >mdi-account-plus</v-icon
-                  >
-                  <v-icon v-else>mdi-account-plus-outline</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </template>
-          </v-list-item>
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon v-if="userSelected(user) !== -1" color="primary"
+                >mdi-account-plus</v-icon
+              >
+              <v-icon v-else>mdi-account-plus-outline</v-icon>
+            </v-btn>
+          </v-list-item-action>
         </template>
-      </v-list-item-group>
+      </v-list-item>
     </v-list>
     <v-btn
       v-if="searchedUsers.length && searchedUsers.length % userOutput === 0"
@@ -66,11 +62,11 @@ export default {
       search: "",
       selected: [],
       searchedUsers: [],
-      userOutput: 10,
+      userOutput: 100,
     };
   },
   computed: {
-    ...mapState(["addedUsers"]),
+    ...mapState(["addedUsers", "deletedUser"]),
   },
   methods: {
     ...mapActions(["vkAPI"]),
@@ -79,6 +75,7 @@ export default {
       if (!this.search) {
         this.search = "";
       }
+      this.selected = [];
       const resp = await this.vkAPI({
         link: "users.search",
         option: {
@@ -88,13 +85,20 @@ export default {
         },
       });
       this.searchedUsers = resp.response.items;
+      console.log("searchedUsers ", this.searchedUsers);
     },
     toggleUser(user, index) {
-      if (this.selected.includes(index)) {
-        this.deleteAddedUser(user.id);
+      if (this.userSelected(user) !== -1) {
+        this.deleteAddedUser(user);
       } else {
         this.addAddedUsers(user);
       }
+    },
+    userSelected(user) {
+      const res = this.addedUsers.findIndex(
+        (userArr) => userArr.id === user.id
+      );
+      return res;
     },
   },
   watch: {},

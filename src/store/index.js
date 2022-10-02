@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     addedUsers: [],
+    deletedUser: {},
   },
   getters: {},
   mutations: {
@@ -15,8 +16,11 @@ export default new Vuex.Store({
     addAddedUsers(state, payload) {
       state.addedUsers.push(payload);
     },
-    deleteAddedUser(state, id) {
-      state.addedUsers = state.addedUsers.filter((user) => user.id !== id);
+    deleteAddedUser(state, user) {
+      state.deletedUser = user;
+      state.addedUsers = state.addedUsers.filter(
+        (userArr) => userArr.id !== user.id
+      );
     },
   },
   actions: {
