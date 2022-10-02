@@ -5,12 +5,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token:
-      "vk1.a._1GmQp9ey-8e2IBUzsGpn3pTtqDBDGcvI5tKW45A4yKvo9aRNnVyQLQW0P7bmwqviyvdCz8nIEyT9rMBzejXp0ye5IFLNaWGo1iMrxA1F-trpJTyTfN-LDvxbB5NKy3HUSrdQSnu8KYRUGVnAeprJyu6csS-BKd2NsrtAr5c5nitcMfVek8ScAhWQbp6kAWM",
-    app_id: "51438811",
+    addedUsers: [],
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    setAddedUsers(state, payload) {
+      state.addedUsers = payload;
+    },
+    addAddedUsers(state, payload) {
+      state.addedUsers.push(payload);
+    },
+    deleteAddedUser(state, id) {
+      state.addedUsers = state.addedUsers.filter((user) => user.id !== id);
+    },
+  },
   actions: {
     vkAPI(context, payload) {
       const pr = new Promise((res) => {
