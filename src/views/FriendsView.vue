@@ -6,6 +6,7 @@
         :user="user"
         :key="user.id"
         class="mt-6"
+        @click.native="goToProfile(user)"
       ></user-card>
     </div>
   </div>
@@ -25,6 +26,11 @@ export default {
   },
   computed: {
     ...mapState(["usersFriends"]),
+  },
+  methods: {
+    goToProfile(user) {
+      this.$router.push({ name: "user", params: { id: user.id } });
+    },
   },
 };
 </script>

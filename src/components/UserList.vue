@@ -55,15 +55,18 @@ export default {
           }
           return acc;
         }, 0);
-        response[index]["mutualFriends"] = mutualFriends;
-        return friend;
+        const respEl = response.findIndex((el) => el.id === friend);
+        if (respEl !== -1) {
+          response[respEl]["mutualFriends"] = mutualFriends;
+          return friend;
+        }
       });
       this.setUsersFriends(response);
       this.$router.push("friends");
       console.log("usersFriends ", this.usersFriends);
     },
   },
-  mounted() {
+  async mounted() {
     //this.setAddedUsers();
   },
 };

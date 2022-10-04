@@ -2,13 +2,16 @@
   <v-card
     width="300"
     class="user__card"
+    :class="{
+      hover: hover,
+    }"
     :style="{
       backgroundColor: `rgba(25, 118, 210, ${0.1 * user.mutualFriends})`,
     }"
   >
     <v-img height="250" :src="user.photo_max"></v-img>
     <v-card-title>{{ user.first_name }} {{ user.last_name }}</v-card-title>
-    <v-card-text class="pb-0"
+    <v-card-text v-if="user.mutualFriends" class="pb-0"
       >Общих друзей: {{ user.mutualFriends }}</v-card-text
     >
     <v-card-text class="pt-0"
@@ -20,7 +23,14 @@
 
 <script>
 export default {
-  props: ["user"],
+  props: {
+    user: {
+      require: true,
+    },
+    hover: {
+      default: true,
+    },
+  },
   data() {
     return {};
   },
@@ -47,6 +57,9 @@ export default {
   methods: {
     ageFormat() {
       const age = this.getAge;
+      if (age === "возраст скрыт") {
+        return;
+      }
       if (age < 5) {
         return age == 1 ? "год" : "года";
       }
@@ -67,12 +80,14 @@ export default {
 
 <style scoped>
 .user__card {
-  cursor: pointer;
   border: 2px solid transparent;
   border-radius: 4px;
   transition: all 0.5s ease-out;
 }
-.user__card:hover {
+.hover {
+  cursor: pointer;
+}
+.hover:hover {
   border: 2px solid teal;
 }
 </style>
