@@ -59,6 +59,7 @@ export default {
         return friend;
       });
       this.setUsersFriends(response);
+      this.$router.push("friends");
       console.log("usersFriends ", this.usersFriends);
     },
   },
