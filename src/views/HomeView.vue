@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex py-8">
     <v-col cols="6" class="pr-8">
-      <serach-users></serach-users>
+      <search-users></search-users>
     </v-col>
     <v-col cols="6" class="pl-8">
       <user-list></user-list>
@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import SerachUsers from "@/components/SerachUsers.vue";
+import SearchUsers from "@/components/SearchUsers.vue";
 import UserList from "@/components/UserList.vue";
 
 export default {
   name: "Home",
 
   components: {
-    SerachUsers,
+    SearchUsers,
     UserList,
   },
 };

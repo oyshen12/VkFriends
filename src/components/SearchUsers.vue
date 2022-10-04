@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   data() {
@@ -66,7 +66,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["addedUsers", "deletedUser"]),
+    ...mapState(["addedUsers"]),
+    ...mapGetters(["allFriends"]),
   },
   methods: {
     ...mapActions(["vkAPI"]),
@@ -81,17 +82,26 @@ export default {
         option: {
           q: this.search,
           count,
-          fields: "bdate, has_photo, city, photo_max",
+          fields: "bdate, photo_max",
         },
       });
       this.searchedUsers = resp.response.items;
-      console.log("searchedUsers ", this.searchedUsers);
     },
-    toggleUser(user, index) {
+    async searchFriends(user) {
+      const { response } = await this.vkAPI({
+        link: "friends.get",
+        option: {
+          user_id: user.id,
+        },
+      });
+      return response ? response.items : [];
+    },
+    async toggleUser(user, index) {
       if (this.userSelected(user) !== -1) {
         this.deleteAddedUser(user);
       } else {
-        this.addAddedUsers(user);
+        const friends = await this.searchFriends(user);
+        this.addAddedUsers({ friends: friends, ...user });
       }
     },
     userSelected(user) {

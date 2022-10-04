@@ -6,18 +6,27 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     addedUsers: [],
-    deletedUser: {},
+    usersFriends: [],
   },
-  getters: {},
+  getters: {
+    allFriends(state) {
+      return state.addedUsers.reduce(
+        (acc, user) => acc.concat(user.friends),
+        []
+      );
+    },
+  },
   mutations: {
     setAddedUsers(state, payload) {
       state.addedUsers = payload;
+    },
+    setUsersFriends(state, payload) {
+      state.usersFriends = payload;
     },
     addAddedUsers(state, payload) {
       state.addedUsers.push(payload);
     },
     deleteAddedUser(state, user) {
-      state.deletedUser = user;
       state.addedUsers = state.addedUsers.filter(
         (userArr) => userArr.id !== user.id
       );

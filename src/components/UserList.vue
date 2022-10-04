@@ -2,7 +2,7 @@
   <div class="list-wrap">
     <div class="d-flex justify-space-between mt-4">
       <span class="list-text">Добавленные пользователи</span>
-      <v-btn color="primary">Построить</v-btn>
+      <v-btn color="primary" @click="buildFriends">Построить</v-btn>
     </div>
     <v-list class="mt-6">
       <v-list-item v-for="user in addedUsers" :key="user.id">
@@ -26,20 +26,43 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
     return {};
   },
   computed: {
-    ...mapState(["addedUsers"]),
+    ...mapState(["addedUsers", "usersFriends"]),
+    ...mapGetters(["allFriends"]),
   },
   methods: {
-    ...mapMutations(["setAddedUsers", "deleteAddedUser"]),
+    ...mapActions(["vkAPI"]),
+    ...mapMutations(["setAddedUsers", "deleteAddedUser", "setUsersFriends"]),
+    async buildFriends() {
+      const { response } = await this.vkAPI({
+        link: "users.get",
+        option: {
+          user_ids: this.allFriends,
+          fields: "photo_max, bdate, sex",
+        },
+      });
+
+      this.allFriends.map((friend, index) => {
+        const mutualFriends = this.addedUsers.reduce((acc, user) => {
+          if (user.friends.includes(friend)) {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+        response[index]["mutualFriends"] = mutualFriends;
+        return friend;
+      });
+      this.setUsersFriends(response);
+      console.log("usersFriends ", this.usersFriends);
+    },
   },
   mounted() {
-    console.log("check ", this.addedUsers);
     //this.setAddedUsers();
   },
 };
