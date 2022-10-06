@@ -70,6 +70,19 @@ export default {
           return friend;
         }
       });
+      response.sort(function (a, b) {
+        const nameA = a.first_name.toLowerCase();
+        const nameB = b.first_name.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        if (nameA === nameB) {
+          const last_nameA = a.last_name.toLowerCase();
+          const last_nameB = b.last_name.toLowerCase();
+          if (last_nameA < last_nameB) return -1;
+          if (last_nameA > last_nameB) return 1;
+        }
+        return 0;
+      });
       this.setUsersFriends(response);
       this.$router.push("friends");
     },
