@@ -4,6 +4,12 @@
       <span class="list-text">Добавленные пользователи</span>
       <v-btn color="primary" @click="buildFriends">Построить</v-btn>
     </div>
+    <div
+      v-if="allFriends.length === 0 && addedUsers.length !== 0"
+      class="list-text mt-4 alarm-friends"
+    >
+      У выбранных пользователей нету друзей или это приватные аккаунты
+    </div>
     <v-list class="mt-6">
       <v-list-item v-for="user in addedUsers" :key="user.id">
         <v-list-item-avatar>
@@ -40,6 +46,9 @@ export default {
     ...mapActions(["vkAPI"]),
     ...mapMutations(["setAddedUsers", "deleteAddedUser", "setUsersFriends"]),
     async buildFriends() {
+      if (this.allFriends.length === 0) {
+        return;
+      }
       const { response } = await this.vkAPI({
         link: "users.get",
         option: {
@@ -77,5 +86,17 @@ export default {
 }
 .list-wrap {
   max-width: 500px;
+}
+.alarm-friends {
+  font-size: 14px;
+  color: red;
+}
+@media (max-width: 540px) {
+  .list-text {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    margin-left: 8px !important;
+    margin-top: auto !important;
+  }
 }
 </style>

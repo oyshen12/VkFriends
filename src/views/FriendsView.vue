@@ -47,4 +47,24 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   padding: 0 64px;
 }
+@media (max-width: 1730px) {
+  .grid__wrap {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 1450px) {
+  .grid__wrap {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (max-width: 1100px) {
+  .grid__wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 800px) {
+  .grid__wrap {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

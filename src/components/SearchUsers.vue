@@ -60,13 +60,12 @@ export default {
   data() {
     return {
       search: "",
-      selected: [],
       searchedUsers: [],
       userOutput: 100,
     };
   },
   computed: {
-    ...mapState(["addedUsers"]),
+    ...mapState(["addedUsers", "authed"]),
     ...mapGetters(["allFriends"]),
   },
   methods: {
@@ -76,7 +75,6 @@ export default {
       if (!this.search) {
         this.search = "";
       }
-      this.selected = [];
       const resp = await this.vkAPI({
         link: "users.search",
         option: {
@@ -111,7 +109,15 @@ export default {
       return res;
     },
   },
-  watch: {},
+  watch: {
+    authed(val) {
+      if (val) {
+        this.searchUsers();
+      } else {
+        this.searchedUsers = [];
+      }
+    },
+  },
   mounted() {
     this.searchUsers();
   },

@@ -189,13 +189,8 @@ export default {
     },
   },
   mounted() {
-    //console.log("recordProp ", this.recordProp);
     this.setCurrentUser();
     this.setCorrectRecord();
-    // console.log(this.getDate(this.recordProp.date));
-    // console.log("groups ", this.groups);
-    //console.log("profiles ", this.profiles);
-    // console.log("user ", this.user);
   },
 };
 </script>
@@ -219,6 +214,8 @@ export default {
 .record-songs {
   border-radius: 15px;
   cursor: pointer;
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
 }
 .record-songs:hover {
   background-color: rgba(128, 128, 128, 0.2);
@@ -233,5 +230,10 @@ export default {
   left: 45%;
   width: 50px !important;
   height: 50px !important;
+}
+@media (max-width: 1050px) {
+  .record__wrap {
+    max-width: 380px !important;
+  }
 }
 </style>

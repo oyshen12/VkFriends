@@ -1,10 +1,11 @@
 <template>
-  <div v-if="userExist" class="d-flex mt-8 justify-center">
+  <div v-if="userExist" class="d-flex mt-8 justify-center user-view__wrap">
     <v-icon @click="$router.back()" color="primary" class="back-img" x-large
       >mdi-keyboard-backspace</v-icon
     >
     <user-card :user="user" :hover="false" class="current-user"></user-card>
-    <div class="d-flex flex-column ml-16">
+
+    <div class="user-info d-flex flex-column">
       <div class="text-h3">В друзьях у пользователей:</div>
       <div class="users__grid mt-4">
         <user-card
@@ -95,6 +96,9 @@ export default {
   grid-template-columns: 1fr;
   grid-gap: 20px;
 }
+.user-info {
+  margin-left: 64px;
+}
 .current-user {
   height: 422px;
 }
@@ -103,5 +107,15 @@ export default {
   align-items: flex-start !important;
   margin-right: 16px;
   height: 80px;
+}
+@media (max-width: 1050px) {
+  .user-view__wrap {
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+  }
+  .user-info {
+    margin-left: 0px;
+  }
 }
 </style>

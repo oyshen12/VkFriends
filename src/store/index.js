@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     addedUsers: [],
     usersFriends: [],
+    authed: false,
   },
   getters: {
     allFriends(state) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     setAddedUsers(state, payload) {
       state.addedUsers = payload;
     },
+    setAuthed(state, payload) {
+      state.authed = payload;
+    },
     setUsersFriends(state, payload) {
       state.usersFriends = payload;
     },
@@ -30,6 +34,10 @@ export default new Vuex.Store({
       state.addedUsers = state.addedUsers.filter(
         (userArr) => userArr.id !== user.id
       );
+    },
+    clearState(state) {
+      state.addedUsers = [];
+      state.usersFriends = [];
     },
   },
   actions: {
