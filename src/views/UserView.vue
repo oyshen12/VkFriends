@@ -16,7 +16,7 @@
         ></user-card>
       </div>
       <span class="text-h3 mt-4">Записи на странице:</span>
-      <div v-if="records" class="users__grid mt-4">
+      <div v-if="records" class="record__grid mt-4">
         <record-card
           v-for="record in records.items"
           :recordProp="record"
@@ -90,9 +90,14 @@ export default {
 </script>
 
 <style scoped>
-.users__grid {
+.record__grid {
   display: grid;
   grid-template-columns: 1fr;
+  grid-gap: 20px;
+}
+.users__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
 }
 .user-info {
@@ -115,6 +120,9 @@ export default {
   }
   .user-info {
     margin-left: 0px;
+  }
+  .users__grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
