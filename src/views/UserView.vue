@@ -67,7 +67,6 @@ export default {
           extended: 1,
         },
       });
-      console.log("responses ", response);
       this.records = response;
     },
   },

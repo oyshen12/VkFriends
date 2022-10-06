@@ -70,7 +70,12 @@ export default {
   },
   methods: {
     ...mapActions(["vkAPI"]),
-    ...mapMutations(["setAddedUsers", "addAddedUsers", "deleteAddedUser"]),
+    ...mapMutations([
+      "setAddedUsers",
+      "addAddedUsers",
+      "deleteAddedUser",
+      "setAuthed",
+    ]),
     async searchUsers(count = this.userOutput) {
       if (!this.search) {
         this.search = "";
@@ -84,6 +89,13 @@ export default {
         },
       });
       this.searchedUsers = resp.response.items;
+      if (
+        this.searchedUsers.length === 0 &&
+        this.search === "" &&
+        this.authed
+      ) {
+        this.setAuthed(false);
+      }
     },
     async searchFriends(user) {
       const { response } = await this.vkAPI({

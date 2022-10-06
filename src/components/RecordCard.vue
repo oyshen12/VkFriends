@@ -32,7 +32,7 @@
           class="imgElement ml-2 mt-2"
         ></v-img>
       </div>
-      <div v-else class="ml-2">
+      <div v-else class="record-video ml-2">
         <v-img :src="record.image"></v-img>
         <v-img class="video__play" src="@/assets/play.png"></v-img>
       </div>
@@ -79,58 +79,33 @@ export default {
     },
   },
   methods: {
+    filter(array, type) {
+      return array?.length ? array.filter((el) => el.type === type) : [];
+    },
     setCorrectRecord() {
+      let newRecord = this.recordProp;
       if (this.recordProp?.copy_history) {
-        const newRecord = {
+        newRecord = {
           ...this.recordProp,
           ...this.recordProp.copy_history[0],
           itPost: true,
         };
-
-        const videos = newRecord.attachments?.filter(
-          (el) => el.type === "video"
-        );
-        if (videos?.length === 1 && newRecord.attachments?.length === 1) {
-          this.videoType = true;
-          const images = newRecord.attachments[0].video.image;
-          newRecord.image = images[images.length - 1].url;
-          this.record = newRecord;
-        }
-
-        newRecord.songs = newRecord.attachments
-          ?.filter((el) => el.type === "audio")
-          .map((el) => el.audio);
-        if (this.videoType) {
-          return;
-        }
-        newRecord.attachments = newRecord.attachments?.filter(
-          (el) => el.type === "photo"
-        );
-        this.record = newRecord;
-      } else {
-        const newRecord = this.recordProp;
-        const videos = newRecord.attachments?.filter(
-          (el) => el.type === "video"
-        );
-        if (videos?.length === 1 && newRecord.attachments?.length === 1) {
-          this.videoType = true;
-          const images = newRecord.attachments[0].video.image;
-          newRecord.image = images[images.length - 1].url;
-          this.record = newRecord;
-        }
-
-        newRecord.songs = newRecord.attachments
-          ?.filter((el) => el.type === "audio")
-          .map((el) => el.audio);
-        if (this.videoType) {
-          return;
-        }
-        newRecord.attachments = newRecord.attachments?.filter(
-          (el) => el.type === "photo"
-        );
+      }
+      const { attachments } = newRecord;
+      const videos = this.filter(attachments, "video");
+      if (videos?.length === 1 && attachments?.length === 1) {
+        this.videoType = true;
+        const images = attachments[0].video.image;
+        newRecord.image = images[images.length - 1].url;
         this.record = newRecord;
       }
-      //console.log(" this.record ", this.record);
+
+      newRecord.songs = this.filter(attachments, "audio").map((el) => el.audio);
+      if (this.videoType) {
+        return;
+      }
+      newRecord.attachments = this.filter(attachments, "photo");
+      this.record = newRecord;
     },
     setCurrentUser() {
       if (this.recordProp.owner_id !== this.recordProp.from_id) {
@@ -138,9 +113,9 @@ export default {
           (el) => el.id === this.recordProp.from_id
         );
         currentUser["photo_max"] =
+          currentUser.photo_max ||
           currentUser.photo_50 ||
           currentUser.photo_100 ||
-          currentUser.photo_max ||
           "https://vk.com/images/camera_200.png";
         this.currentUser = currentUser;
       } else {
@@ -223,6 +198,9 @@ export default {
 .song-artist {
   font-weight: bold;
   color: #1976d2;
+}
+.record-video {
+  position: relative;
 }
 .video__play {
   position: absolute;

@@ -57,7 +57,7 @@ export default {
         },
       });
 
-      this.allFriends.map((friend, index) => {
+      this.allFriends.map((friend) => {
         const mutualFriends = this.addedUsers.reduce((acc, user) => {
           if (user.friends.includes(friend)) {
             acc += 1;
@@ -73,9 +73,6 @@ export default {
       this.setUsersFriends(response);
       this.$router.push("friends");
     },
-  },
-  async mounted() {
-    //this.setAddedUsers();
   },
 };
 </script>

@@ -28,7 +28,6 @@ export default {
     ...mapMutations(["setAuthed", "clearState"]),
     login() {
       VK.Auth.login((data) => {
-        console.log("data ", data);
         if (data.status === "connected") {
           this.setAuthed(true);
         }
