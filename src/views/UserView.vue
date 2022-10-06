@@ -1,5 +1,8 @@
 <template>
   <div v-if="userExist" class="d-flex mt-8 justify-center">
+    <v-icon @click="$router.back()" color="primary" class="back-img" x-large
+      >mdi-keyboard-backspace</v-icon
+    >
     <user-card :user="user" :hover="false" class="current-user"></user-card>
     <div class="d-flex flex-column ml-16">
       <div class="text-h3">В друзьях у пользователей:</div>
@@ -12,6 +15,17 @@
         ></user-card>
       </div>
       <span class="text-h3 mt-4">Записи на странице:</span>
+      <div v-if="records" class="users__grid mt-4">
+        <record-card
+          v-for="record in records.items"
+          :recordProp="record"
+          :groups="records.groups"
+          :profiles="records.profiles"
+          :user="user"
+          :key="record.id"
+        ></record-card>
+      </div>
+      <div v-else class="text-h3 mt-4">Это приватный аккаунт</div>
     </div>
   </div>
 </template>
@@ -19,9 +33,10 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import UserCard from "@/components/UserCard.vue";
+import RecordCard from "@/components/RecordCard.vue";
 
 export default {
-  components: { UserCard },
+  components: { UserCard, RecordCard },
   component: {
     UserCard,
   },
@@ -29,7 +44,7 @@ export default {
     return {
       id: 0,
       user: {},
-      records: [],
+      records: {},
     };
   },
   computed: {
@@ -48,9 +63,11 @@ export default {
         link: "wall.get",
         option: {
           owner_id: this.id,
+          extended: 1,
         },
       });
-      console.log("response ", response);
+      console.log("responses ", response);
+      this.records = response;
     },
   },
 
@@ -75,10 +92,16 @@ export default {
 <style scoped>
 .users__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 20px;
 }
 .current-user {
   height: 422px;
+}
+.back-img {
+  font-size: 80px !important;
+  align-items: flex-start !important;
+  margin-right: 16px;
+  height: 80px;
 }
 </style>
