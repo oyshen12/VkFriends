@@ -8,6 +8,8 @@ export default new Vuex.Store({
     addedUsers: [],
     usersFriends: [],
     authed: false,
+    friendsOfFriends: [],
+    counterFriends: 0,
   },
   getters: {
     allFriends(state) {
@@ -24,8 +26,17 @@ export default new Vuex.Store({
     setAuthed(state, payload) {
       state.authed = payload;
     },
+    setCounterFriends(state, payload) {
+      state.counterFriends = payload;
+    },
     setUsersFriends(state, payload) {
       state.usersFriends = payload;
+    },
+    setFriendsFriends(state, payload) {
+      state.friendsOfFriends = JSON.parse(
+        JSON.stringify(state.friendsOfFriends)
+      );
+      state.friendsOfFriends[payload.index] = payload;
     },
     addAddedUsers(state, payload) {
       state.addedUsers.push(payload);

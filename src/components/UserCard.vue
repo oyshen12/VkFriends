@@ -11,6 +11,11 @@
   >
     <v-img height="250" :src="user.photo_max"></v-img>
     <v-card-title>{{ user.first_name }} {{ user.last_name }}</v-card-title>
+
+    <v-card-text v-if="friend" class="pb-0"
+      >Друзей: {{ friend.count }}</v-card-text
+    >
+    <div v-else class="friends"></div>
     <v-card-text v-if="user.mutualFriends" class="pb-0"
       >Общих друзей: {{ user.mutualFriends }}</v-card-text
     >
@@ -22,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     user: {
@@ -30,11 +36,14 @@ export default {
     hover: {
       default: true,
     },
+    index: { require: true },
+    friend: { require: true },
   },
   data() {
     return {};
   },
   computed: {
+    ...mapState(["friendsOfFriends"]),
     getAge() {
       if (this.user.bdate?.split(".").length === 3) {
         const dateString = this.user.bdate
@@ -89,5 +98,8 @@ export default {
 }
 .hover:hover {
   border: 2px solid teal;
+}
+.friends {
+  height: 22px !important;
 }
 </style>

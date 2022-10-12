@@ -2,9 +2,11 @@
   <div class="friends__wrap">
     <div class="grid__wrap">
       <user-card
-        v-for="user in usersFriends"
+        v-for="(user, index) in usersFriends"
         :user="user"
+        :index="index"
         :key="user.id"
+        :friend="friendsOfFriends[index]"
         class="mt-6"
         @click.native="goToProfile(user)"
       ></user-card>
@@ -15,22 +17,61 @@
 
 <script>
 import UserCard from "@/components/UserCard.vue";
-import { mapState } from "vuex";
-
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   components: {
     UserCard,
   },
   data() {
-    return {};
+    return {
+      interval: 0,
+    };
   },
   computed: {
-    ...mapState(["usersFriends"]),
+    ...mapState(["usersFriends", "counterFriends", "friendsOfFriends"]),
   },
   methods: {
+    ...mapActions(["vkAPI"]),
+    ...mapMutations(["setFriendsFriends", "setCounterFriends"]),
     goToProfile(user) {
       this.$router.push({ name: "user", params: { id: user.id } });
     },
+    async searchFriends(user, i) {
+      const { response } = await this.vkAPI({
+        link: "friends.get",
+        option: {
+          user_id: user.id,
+        },
+      });
+      const resp = response ? response.count : [];
+      this.setFriendsFriends({
+        id: this.usersFriends[i].id,
+        index: i,
+        count: resp.length !== 0 ? resp : "приватный аккаунт",
+      });
+    },
+    getFriends() {
+      if (this.counterFriends === this.usersFriends.length) {
+        return;
+      }
+      this.interval = setInterval(async () => {
+        const counter = this.counterFriends;
+        for (let i = counter; i < counter + 4; i++) {
+          this.setCounterFriends(i);
+          if (i === this.usersFriends.length) {
+            clearInterval(this.interval);
+            return;
+          }
+          this.searchFriends(this.usersFriends[i], i);
+        }
+      }, 1500);
+    },
+  },
+  mounted() {
+    this.getFriends();
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
   },
 };
 </script>
